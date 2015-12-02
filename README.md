@@ -1,2 +1,2 @@
 # SmartPage
-更好用、好用的jQuery分页
+更好用、易用的jQuery分页
