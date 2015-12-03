@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>分页demo</title>
+	<!-- <link rel="stylesheet" type="text/css" href="./style.css"> -->
+	<style type="text/css">
+	body{
+		margin: 0;
+		padding: 0;
+	}
+	</style>
+</head>
+<body>
+	<h3>分页demo</h3>
+	<div class="pager"></div>
+</body>
+<script src="./jquery/src/jquery-1.11.1.js"></script>
+<script src="./SmartPage.js"></script>
+<script type="text/javascript">
+	$('.pager').smartPage({
+		total: 1000
+	});
+</script>
+</html>
