@@ -115,6 +115,8 @@ function render() {
         htmlArray.push(TEMPLATE.right);
     };
     htmlArray.push(TEMPLATE.last);
+    htmlArray.push(self.pageTotal);
+    htmlArray.push(TEMPLATE.page);
 
     var view = $(htmlArray.join(''));
 
@@ -177,6 +179,16 @@ function bindPageHandle(view) {
         event.preventDefault();
 
         self.pageNumber = 1;
+        self.render();
+        self.onChangePage(self.pageNumber);
+    }).on('click', '#jumpPageBtn', function(event) {
+        event.preventDefault();
+
+        var pageNumber = parseInt(self.container.find('#jumpPage').val());
+        if(!pageNumber|| pageNumber > self.totalPage||pageNumber < 1){
+            return;
+        }
+        self.pageNumber = pageNumber;
         self.render();
         self.onChangePage(self.pageNumber);
     });
@@ -257,6 +269,7 @@ var TEMPLATE = {
     left: '<li class="page-number page-number-',
     middle: '"><a href="javascript:void(0)">',
     right: '</a></li>',
-    last: '<li class="page-next"><a href="javascript:void(0)">›</a></li><li class="page-last"><a href="javascript:void(0)">»</a></li></ul>',
-    style: '<style>.smartPage{display:inline-block;padding-left:0;border-radius:4px}.smartPage>li{display:inline}.smartPage>li:first-child>a{margin-right:0;border-radius:4px 0 0 4px}.smartPage>li:last-child>a{margin-right:0;border-radius:0 4px 4px 0}.smartPage>li>a,.smartPage>li>span{position:relative;float:left;padding:6px 12px;margin-left:-1px;line-height:1.42857143;color:#428bca;text-decoration:none;background-color:#fff;border:1px solid #ddd}.smartPage>.active>a,.smartPage>.active>span,.smartPage>.active>a:hover,.smartPage>.active>span:hover,.smartPage>.active>a:focus,.smartPage>.active>span:focus{z-index:2;color:#fff;cursor:default;background-color:#428bca;border-color:#428bca}.smartPage>li>a:hover,.smartPage>li>span:hover,.smartPage>li>a:focus,.smartPage>li>span:focus{color:#2a6496;background-color:#eee;border-color:#ddd}.smartPage .pager li > a,.smartPage .pager li > span{border-radius:0}.smartPage > .disabled > span,.smartPage > .disabled > span:hover,.smartPage > .disabled > span:focus,.smartPage > .disabled > a,.smartPage > .disabled > a:hover,.smartPage > .disabled > a:focus{color:#777;background-color:#fff;border-color:#ddd;cursor:default}</style>'
+    last: '<li class="page-next"><a href="javascript:void(0)">›</a></li><li class="page-last"><a href="javascript:void(0)">»</a></li></ul><span class="total">共',
+    page: '页</span><input type="number" id="jumpPage" class="form-control"><a class="btn btn-primary form-group" id="jumpPageBtn">跳转</a>',
+    style: '<style>.smartPage{vertical-align: middle;display:inline-block;padding-left:0;border-radius:4px}#jumpPage.form-control{width:100px;display:inline-block;}.total{font-size:12px}.smartPage>li{display:inline}.smartPage>li:first-child>a{margin-right:0;border-radius:4px 0 0 4px}.smartPage>li:last-child>a{margin-right:0;border-radius:0 4px 4px 0}.smartPage>li>a,.smartPage>li>span{position:relative;float:left;padding:6px 12px;margin-left:-1px;line-height:1.42857143;color:#428bca;text-decoration:none;background-color:#fff;border:1px solid #ddd}.smartPage>.active>a,.smartPage>.active>span,.smartPage>.active>a:hover,.smartPage>.active>span:hover,.smartPage>.active>a:focus,.smartPage>.active>span:focus{z-index:2;color:#fff;cursor:default;background-color:#428bca;border-color:#428bca}.smartPage>li>a:hover,.smartPage>li>span:hover,.smartPage>li>a:focus,.smartPage>li>span:focus{color:#2a6496;background-color:#eee;border-color:#ddd}.smartPage .pager li > a,.smartPage .pager li > span{border-radius:0}.smartPage > .disabled > span,.smartPage > .disabled > span:hover,.smartPage > .disabled > span:focus,.smartPage > .disabled > a,.smartPage > .disabled > a:hover,.smartPage > .disabled > a:focus{color:#777;background-color:#fff;border-color:#ddd;cursor:default}</style>'
 }
