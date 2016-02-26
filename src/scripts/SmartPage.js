@@ -184,25 +184,43 @@ function bindPageHandle(view) {
     }).on('click', '#jumpPageBtn', function(event) {
         event.preventDefault();
 
-        var pageNumber = parseInt(self.container.find('#jumpPage').val());
-        if(!pageNumber|| pageNumber > self.totalPage||pageNumber < 1){
-            return;
+        jumpPage.call(self);
+
+    }).on('keypress', '#jumpPage', function(event) {
+        if (event.keyCode == 13) {
+            jumpPage.call(self);
         }
-        self.pageNumber = pageNumber;
-        self.render();
-        self.onChangePage(self.pageNumber);
     });
 }
 
 function reset(option) {
     var self = this;
 
-    for (var xx in option){
+    for (var xx in option) {
         self[xx] = option[xx];
     }
     self.pageTotal = (option.pageTotal) || Math.ceil(self.total / self.pageSize);
 
     self.render();
+}
+
+function jumpPage() {
+    var self = this;
+
+    var pageNumberElement = self.container.find('#jumpPage'),
+        pageNumber = parseInt(pageNumberElement.val());
+
+    switch (true) {
+        case !pageNumber || pageNumber < 1:
+            pageNumber = 1;
+        case pageNumber > self.pageTotal:
+            pageNumber = self.pageTotal;
+    }
+
+    self.pageNumber = pageNumber;
+    self.render();
+    self.container.find('#jumpPage').val(pageNumber);
+    self.onChangePage(self.pageNumber);
 }
 
 function setPageSize() {
@@ -269,7 +287,7 @@ var TEMPLATE = {
     left: '<li class="page-number page-number-',
     middle: '"><a href="javascript:void(0)">',
     right: '</a></li>',
-    last: '<li class="page-next"><a href="javascript:void(0)">›</a></li><li class="page-last"><a href="javascript:void(0)">»</a></li></ul><span class="total">共',
+    last: '<li class="page-next"><a href="javascript:void(0)">›</a></li><li class="page-last"><a href="javascript:void(0)">»</a></li></ul><span class="total smartPage">共',
     page: '页</span><input type="number" id="jumpPage" class="form-control"><a class="btn btn-primary form-group" id="jumpPageBtn">跳转</a>',
-    style: '<style>.smartPage{vertical-align: middle;display:inline-block;padding-left:0;border-radius:4px}#jumpPage.form-control{width:100px;display:inline-block;}.total{font-size:12px}.smartPage>li{display:inline}.smartPage>li:first-child>a{margin-right:0;border-radius:4px 0 0 4px}.smartPage>li:last-child>a{margin-right:0;border-radius:0 4px 4px 0}.smartPage>li>a,.smartPage>li>span{position:relative;float:left;padding:6px 12px;margin-left:-1px;line-height:1.42857143;color:#428bca;text-decoration:none;background-color:#fff;border:1px solid #ddd}.smartPage>.active>a,.smartPage>.active>span,.smartPage>.active>a:hover,.smartPage>.active>span:hover,.smartPage>.active>a:focus,.smartPage>.active>span:focus{z-index:2;color:#fff;cursor:default;background-color:#428bca;border-color:#428bca}.smartPage>li>a:hover,.smartPage>li>span:hover,.smartPage>li>a:focus,.smartPage>li>span:focus{color:#2a6496;background-color:#eee;border-color:#ddd}.smartPage .pager li > a,.smartPage .pager li > span{border-radius:0}.smartPage > .disabled > span,.smartPage > .disabled > span:hover,.smartPage > .disabled > span:focus,.smartPage > .disabled > a,.smartPage > .disabled > a:hover,.smartPage > .disabled > a:focus{color:#777;background-color:#fff;border-color:#ddd;cursor:default}</style>'
+    style: '<style>.smartPage{display:inline-block;padding-left:0;border-radius:4px;vertical-align:middle}.smartPage>li{display:inline}.smartPage>li:first-child>a{margin-right:0;border-radius:4px 0 0 4px}.smartPage>li:last-child>a{margin-right:0;border-radius:0 4px 4px 0}.smartPage>li>a,.smartPage>li>span{position:relative;float:left;padding:6px 12px;margin-left:-1px;line-height:1.42857143;color:#428bca;text-decoration:none;background-color:#fff;border:1px solid #ddd}.smartPage>.active>a,.smartPage>.active>span,.smartPage>.active>a:hover,.smartPage>.active>span:hover,.smartPage>.active>a:focus,.smartPage>.active>span:focus{z-index:2;color:#fff;cursor:default;background-color:#428bca;border-color:#428bca}.smartPage>li>a:hover,.smartPage>li>span:hover,.smartPage>li>a:focus,.smartPage>li>span:focus{color:#2a6496;background-color:#eee;border-color:#ddd}.smartPage .pager li > a,.smartPage .pager li > span{border-radius:0}.smartPage > .disabled > span,.smartPage > .disabled > span:hover,.smartPage > .disabled > span:focus,.smartPage > .disabled > a,.smartPage > .disabled > a:hover,.smartPage > .disabled > a:focus{color:#777;background-color:#fff;border-color:#ddd;cursor:default}#jumpPage{width:100px;padding:6px 12px;font-size:14px;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:4px 0 0 4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;-o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;vertical-align:middle}#jumpPageBtn{color:#fff;display:inline-block;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:normal;line-height:1.42857143;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-image:none;border:1px solid transparent;border-radius:0 4px 4px 0;border:1px solid #ccc;vertical-align:middle;background-color:#337ab7;border-color:#2e6da4;pointer:cursor}#jumpPageBtn:hover,#jumpPageBtn:active{background:#23527c}#jumpPageBtn{}.smartPage.total{margin-right:100px;margin-left:20px;color:#666;font-size:12px;vertical-align:middle}</style>'
 }
