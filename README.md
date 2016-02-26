@@ -24,3 +24,13 @@
 </script>
 </html>
 ```
+###Parameter
+```JavaScript
+$('.pager').smartPage({
+	total: 1000,
+	pageNumber: 1,
+	pageSize: 20,
+	displayLimit: 10,
+	onChangePage: function(number){alert(number)},
+});
+```
